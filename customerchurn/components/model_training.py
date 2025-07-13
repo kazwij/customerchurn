@@ -25,7 +25,7 @@ from sklearn.ensemble import(
 )
 from sklearn.pipeline import Pipeline
 from imblearn.over_sampling import SMOTE
-
+import mlflow
 
 class ModelTrainer:
     
@@ -38,6 +38,17 @@ class ModelTrainer:
             self.data_validation_artifact = data_validation_artifact
         except Exception as e:
             raise CustomerChurnException(e,sys)
+
+    def track_mlflow(self,best_model_pipeline,test_metric):
+        with mlflow.start_run():
+            f1_score = test_metric.f1_score 
+            precision_score = test_metric.f1_score
+            recall_score = test_metric.recall_score
+
+            mlflow.log_metric("f1_score",f1_score)
+            mlflow.log_metric("precision_score",precision_score)
+            mlflow.log_metric("recall_score",recall_score)
+            mlflow.sklearn.log_model(best_model_pipeline,"model")
 
 
     def train_model(self,X_train,y_train,X_test,y_test):
@@ -101,12 +112,15 @@ class ModelTrainer:
                 param=params,
                 preprocessor=None
             )
-
+ 
             y_train_pred = best_model_pipeline.predict(X_train_transformed)
             y_test_pred = best_model_pipeline.predict(X_test_transformed)
-            
+
             train_metrics = get_classification_score(y_true=y_train, y_pred=y_train_pred)
             test_metrics = get_classification_score(y_true=y_test, y_pred=y_test_pred)
+
+            ## Track mlflow 
+            self.track_mlflow(best_model_pipeline,train_metrics)
 
             os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_file_path), exist_ok=True)
             save_object(self.model_trainer_config.trained_model_file_path, obj=best_model_pipeline)
