@@ -132,6 +132,8 @@ class DataTransformation:
            ##saving non fitted preprocessor object
            
             save_object(self.data_transformation_config.transformed_object_file_path,preprocessor)
+
+            save_object("final_model/preprocessor.plk",preprocessor)
            
            ###END
            

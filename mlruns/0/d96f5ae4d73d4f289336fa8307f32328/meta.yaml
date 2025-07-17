@@ -1,0 +1,14 @@
+artifact_uri: file:///home/Kaz/Projects/01_Working/customerchurn/mlruns/0/d96f5ae4d73d4f289336fa8307f32328/artifacts
+end_time: 1752452798650
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d96f5ae4d73d4f289336fa8307f32328
+run_name: sassy-shrew-693
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752452796943
+status: 3
+tags: []
+user_id: Kaz

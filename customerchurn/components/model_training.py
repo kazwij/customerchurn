@@ -1,5 +1,6 @@
 import os,sys
-
+from dotenv import load_dotenv
+load_dotenv()
 import pandas as pd
 
 #import mlflow.sklearn 
@@ -27,6 +28,12 @@ from sklearn.pipeline import Pipeline
 from imblearn.over_sampling import SMOTE
 import mlflow
 
+import dagshub
+dagshub.init(repo_owner='kazwij', repo_name='customerchurn', mlflow=True)
+
+
+
+
 class ModelTrainer:
     
     def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact,
@@ -40,15 +47,27 @@ class ModelTrainer:
             raise CustomerChurnException(e,sys)
 
     def track_mlflow(self,best_model_pipeline,test_metric):
-        with mlflow.start_run():
-            f1_score = test_metric.f1_score 
-            precision_score = test_metric.f1_score
-            recall_score = test_metric.recall_score
+        
+        #log the metrics 
+        f1_score = test_metric.f1_score 
+        precision_score = test_metric.f1_score
+        recall_score = test_metric.recall_score
 
-            mlflow.log_metric("f1_score",f1_score)
-            mlflow.log_metric("precision_score",precision_score)
-            mlflow.log_metric("recall_score",recall_score)
-            mlflow.sklearn.log_model(best_model_pipeline,"model")
+        mlflow.log_metric("f1_score",f1_score)
+        mlflow.log_metric("precision_score",precision_score)
+        mlflow.log_metric("recall_score",recall_score)
+        
+
+        # log the complete pipeline ( preprocessor + best model)
+
+        mlflow.sklearn.log_model(
+            sk_model = best_model_pipeline,
+            artifact_path ="model",
+            registered_model_name = "CustomerChurn"
+
+        )
+
+        
 
 
     def train_model(self,X_train,y_train,X_test,y_test):
@@ -125,6 +144,8 @@ class ModelTrainer:
             os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_file_path), exist_ok=True)
             save_object(self.model_trainer_config.trained_model_file_path, obj=best_model_pipeline)
 
+            save_object("final_model/model.pkl",best_model_pipeline)
+
             return ModelTrainerArtifact(
                 trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                 train_metric_artifact=train_metrics,
@@ -144,8 +165,10 @@ class ModelTrainer:
 
             X_test = test_df.drop(columns=[TARGET_COLUMN])
             y_test = test_df[TARGET_COLUMN]
-
-            return self.train_model(X_train, y_train, X_test, y_test)
+            with mlflow.start_run(run_name="customer_churn_training") as run:
+                artifact = self.train_model(X_train, y_train, X_test, y_test)
+            
+            return artifact
 
         except Exception as e:
             raise CustomerChurnException(e, sys)

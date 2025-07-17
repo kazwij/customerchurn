@@ -1,0 +1,10 @@
+artifact_location: file:///home/Kaz/Projects/01_Working/customerchurn/mlruns/0/models/m-47c15d649fc34010a87d21e0f53a6f88/artifacts
+creation_timestamp: 1752452796965
+experiment_id: '0'
+last_updated_timestamp: 1752452798647
+model_id: m-47c15d649fc34010a87d21e0f53a6f88
+model_type: null
+name: model
+source_run_id: d96f5ae4d73d4f289336fa8307f32328
+status: 2
+status_message: null
