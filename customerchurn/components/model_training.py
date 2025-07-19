@@ -9,7 +9,7 @@ from customerchurn.logging.logger import logging
 from customerchurn.constant.training_pipeline import TARGET_COLUMN
 from customerchurn.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact,DataValidationArtifact
 from customerchurn.entity.config_entity import ModelTrainerConfig
-from customerchurn.utils.main_utils.utils import load_numpy_array_data,evaluate_model
+from customerchurn.utils.main_utils.utils import evaluate_model
 from customerchurn.utils.ml_utils.metrics.classification_metric import get_classification_score
 from customerchurn.utils.main_utils.utils import save_object,load_object
 from customerchurn.utils.ml_utils.model.estimator import CustomerChurnModel
@@ -31,7 +31,7 @@ import mlflow
 import dagshub
 dagshub.init(repo_owner='kazwij', repo_name='customerchurn', mlflow=True)
 
-
+ 
 
 
 class ModelTrainer:
