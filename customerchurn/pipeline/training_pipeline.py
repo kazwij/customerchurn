@@ -65,18 +65,23 @@ class TrainingPipeline:
         
     def start_model_trainer(self,data_transformation_artifact:DataTransformationArtifact)->ModelTrainerArtifact:
         try:
-            self.model_trainer_config: ModelTrainerConfig = ModelTrainerConfig(
+            model_trainer_config: ModelTrainerConfig = ModelTrainerConfig(
                 training_pipeline_config=self.training_pipeline_config
             )
 
+
+
+            model_trainer = ModelTrainer(model_trainer_config=model_trainer_config , data_transformation_artifact = data_transformation_artifact,data_validation_artifact=data_validation_artifact )
+            model_trainer_artifact  = model_trainer.initiat_model_trainer()
+            '''
             model_trainer = ModelTrainer(
                 data_transformation_artifact=data_transformation_artifact,
                 model_trainer_config=self.model_trainer_config,
             )
 
             model_trainer_artifact = model_trainer.initiate_model_trainer()
-
+            '''
             return model_trainer_artifact
-
+            
         except Exception as e:
             raise CustomerChurnException(e, sys)
