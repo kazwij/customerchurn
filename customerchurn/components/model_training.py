@@ -30,8 +30,7 @@ import mlflow
 
 import dagshub
 
-
-os.environ["MLFLOW_TRACKING_URI"]   = "https://dagshub.com/kazwij/customerchurn.mlflow"
+os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/kazwij/customerchurn.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "kazwij"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("DAGSHUB_TOKEN")
 
