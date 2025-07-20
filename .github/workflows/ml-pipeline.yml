@@ -31,4 +31,12 @@ jobs:
           export MLFLOW_TRACKING_URI=https://dagshub.com/kazwij/customerchurn.mlflow
           export MLFLOW_TRACKING_USERNAME=kazwij
           export MLFLOW_TRACKING_PASSWORD=$DAGSHUB_TOKEN
-          python customerchurn/pipeline/training_pipeline.py        
+          python customerchurn/pipeline/training_pipeline.py  
+      
+      - name: Debug auth
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          echo "URI: https://dagshub.com/kazwij/customerchurn.mlflow"
+          echo "User: kazwij"
+          echo "Token length: ${#DAGSHUB_TOKEN}"
