@@ -23,16 +23,6 @@ jobs:
       - name: Install package (editable)
         run: pip install -e .
 
-      - name: Configure Git and DVC
-        run: |
-          git config --global user.email "kasun.com"
-          git config --global user.name "Your Name"
-          dvc remote modify origin auth basic
-          dvc remote modify origin user $MLFLOW_TRACKING_USERNAME
-          dvc remote modify origin password $DAGSHUB_TOKEN
-
-
-
       - name: Train & register model
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
