@@ -29,9 +29,15 @@ from imblearn.over_sampling import SMOTE
 import mlflow
 
 import dagshub
+
+
+os.environ["MLFLOW_TRACKING_URI"]   = "https://dagshub.com/kazwij/customerchurn.mlflow"
+os.environ["MLFLOW_TRACKING_USERNAME"] = "kazwij"
+os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("DAGSHUB_TOKEN")
+
 if os.getenv("CI") or os.getenv("GITHUB_ACTIONS"):
     # GitHub Actions / headless
-    mlflow.set_tracking_uri("https://dagshub.com/kazwij/customerchurn.mlflow")
+    
     mlflow.set_experiment("churn-exp")
 else:
     # local development

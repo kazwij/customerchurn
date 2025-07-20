@@ -25,8 +25,12 @@ jobs:
 
       - name: Train & register model
         env:
-          MONGODB_URI:      ${{ secrets.MONGODB_URI }}
-          DAGSHUB_TOKEN:    ${{ secrets.DAGSHUB_TOKEN }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          export DAGSHUB_TOKEN=$DAGSHUB_TOKEN
+          export MLFLOW_TRACKING_URI=https://dagshub.com/kazwij/customerchurn.mlflow
+          export MLFLOW_TRACKING_USERNAME=kazwij
+          export MLFLOW_TRACKING_PASSWORD=$DAGSHUB_TOKEN
           python customerchurn/pipeline/training_pipeline.py
+
+          
