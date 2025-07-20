@@ -29,7 +29,13 @@ from imblearn.over_sampling import SMOTE
 import mlflow
 
 import dagshub
-dagshub.init(repo_owner='kazwij', repo_name='customerchurn', mlflow=True)
+if os.getenv("CI") or os.getenv("GITHUB_ACTIONS"):
+    # GitHub Actions / headless
+    mlflow.set_tracking_uri("https://dagshub.com/kazwij/customerchurn.mlflow")
+    mlflow.set_experiment("churn-exp")
+else:
+    # local development
+    dagshub.init(repo_owner="kazwij", repo_name="customerchurn", mlflow=True)
 
  
 
