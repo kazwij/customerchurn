@@ -70,7 +70,7 @@ class TrainingPipeline:
             )
 
 
-
+            logging.info("model training begin")
             model_trainer = ModelTrainer(model_trainer_config=model_trainer_config , data_transformation_artifact = data_transformation_artifact,data_validation_artifact=data_validation_artifact )
             model_trainer_artifact  = model_trainer.initiat_model_trainer()
             '''
