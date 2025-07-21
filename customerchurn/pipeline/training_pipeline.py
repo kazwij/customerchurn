@@ -38,7 +38,7 @@ class TrainingPipeline:
             self.data_ingestion_config = DataIngestionConfig(training_pipeline_config=self.training_pipeline_config)
             logging.info("Start data Ingestion")
             data_ingestion = DataIngestion(data_ingestion_config=self.data_ingestion_config)
-
+            return data_ingestion.initiate_data_ingestion()
         except Exception as e:
             raise CustomerChurnException(e,sys)
 
@@ -85,3 +85,21 @@ class TrainingPipeline:
             
         except Exception as e:
             raise CustomerChurnException(e, sys)
+        
+    def run_pipeline(self):
+        try:
+            data_ingestion_artifact=self.start_data_ingestion()
+            data_validation_artifact=self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
+            data_transformation_artifact=self.start_data_transformation(data_validation_artifact=data_validation_artifact)
+            model_trainer_artifact=self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)          
+            
+            return model_trainer_artifact
+        except Exception as e:
+            raise CustomerChurnException(e,sys)
+        
+if __name__ == "__main__":
+    try:
+        pipeline = TrainingPipeline()
+        pipeline.run_pipeline()
+    except Exception as e:
+        raise CustomerChurnException(e, sys)
