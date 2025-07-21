@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 from dotenv import load_dotenv # read from .env file. 
 load_dotenv()
 
-MONGO_DB_URL = os.getenv("MONGO_DB_URL")
+MONGO_DB_URL = os.getenv("MONGODB_URL")
 if not MONGO_DB_URL:
     raise ValueError("URL not set")
 
