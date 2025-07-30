@@ -4,3 +4,4 @@ venv
 .DS_Store
 Artifacts/
 logs/
+mongo_connect_test.py
