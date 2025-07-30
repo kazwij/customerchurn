@@ -10,7 +10,7 @@ xgboost
 catboost
 ipykernel
 pymongo>=4.0
-pymongo[srv]==3.12
+#pymongo[srv]==3.12
 dnspython>=2.0
 pyaml
 mlflow==2.9.2
