@@ -63,7 +63,7 @@ class TrainingPipeline:
         except Exception as e:
             raise CustomerChurnException(e,sys)
         
-    def start_model_trainer(self,data_transformation_artifact:DataTransformationArtifact)->ModelTrainerArtifact:
+    def start_model_trainer(self,data_transformation_artifact:DataTransformationArtifact,data_validation_artifact: DataValidationArtifact)->ModelTrainerArtifact:
         try:
             model_trainer_config: ModelTrainerConfig = ModelTrainerConfig(
                 training_pipeline_config=self.training_pipeline_config
@@ -71,7 +71,7 @@ class TrainingPipeline:
 
 
             logging.info("model training begin")
-            model_trainer = ModelTrainer(model_trainer_config=model_trainer_config , data_transformation_artifact = data_transformation_artifact,data_validation_artifact=data_validation_artifact )
+            model_trainer = ModelTrainer(model_trainer_config=model_trainer_config , data_transformation_artifact = data_transformation_artifact,data_validation_artifact= data_validation_artifact)
             model_trainer_artifact  = model_trainer.initiat_model_trainer()
             '''
             model_trainer = ModelTrainer(
@@ -91,7 +91,8 @@ class TrainingPipeline:
             data_ingestion_artifact=self.start_data_ingestion()
             data_validation_artifact=self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
             data_transformation_artifact=self.start_data_transformation(data_validation_artifact=data_validation_artifact)
-            model_trainer_artifact=self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)          
+            model_trainer_artifact=self.start_model_trainer(data_transformation_artifact=data_transformation_artifact,
+                                                            data_validation_artifact=data_validation_artifact)          
             
             return model_trainer_artifact
         except Exception as e:
